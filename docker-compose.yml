@@ -1,0 +1,100 @@
+services:
+  # Python環境
+  python-app:
+    build:
+      context: .
+      dockerfile: python_env/Dockerfile
+    container_name: python-app
+    ports:
+      - "8000:8000"
+    volumes:
+      # 開発時はソースコードの変更を反映
+      - .:/app
+      # Pythonのキャッシュは除外
+      - /app/__pycache__
+      - /app/.pytest_cache
+    environment:
+      - PYTHONPATH=/app
+      - FLASK_ENV=development
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
+  # Java環境
+  java-app:
+    build:
+      context: .
+      dockerfile: java_env/Dockerfile
+    container_name: java-app
+    volumes:
+      # 開発時はソースコードの変更を反映
+      - .:/app
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
+  # Ruby環境
+  ruby-app:
+    build:
+      context: .
+      dockerfile: ruby_env/Dockerfile
+    container_name: ruby-app
+    ports:
+      - "8001:8001"
+    volumes:
+      # 開発時はソースコードの変更を反映
+      - .:/app
+    environment:
+      - RACK_ENV=development
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
+  # PHP環境
+  php-app:
+    build:
+      context: .
+      dockerfile: php_env/Dockerfile
+    container_name: php-app
+    ports:
+      - "8002:8002"
+    volumes:
+      # 開発時はソースコードの変更を反映（vendorディレクトリは除外）
+      - ./php_code:/app/php_code
+      - /app/php_code/vendor
+    environment:
+      - APP_ENV=development
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
+  # Go環境
+  go-app:
+    build:
+      context: .
+      dockerfile: go_env/Dockerfile
+    container_name: go-app
+    ports:
+      - "8003:8003"
+    volumes:
+      # 開発時はソースコードの変更を反映
+      - .:/app
+    environment:
+      - APP_ENV=development
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
