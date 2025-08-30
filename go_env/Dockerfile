@@ -1,5 +1,5 @@
-# Go 1.21の公式イメージをベースに使用
-FROM golang:1.21-alpine
+# Go 1.25の公式イメージをベースに使用
+FROM golang:1.25.0-alpine
 
 # 作業ディレクトリを設定
 WORKDIR /app
