@@ -97,6 +97,29 @@ services:
     networks:
       - app-network
 
+  # Node.js環境
+  node-app:
+    build:
+      context: .
+      dockerfile: node_env/Dockerfile
+    container_name: node-app
+    ports:
+      - "3000:3000" # React開発サーバー用ポート
+    volumes:
+      # 開発時はソースコードの変更を反映
+      - .:/app
+      # node_modulesは除外
+      - /app/node_code/node_modules
+      - /app/node_code/react-app/node_modules
+    environment:
+      - APP_ENV=development
+      - NODE_ENV=development
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
