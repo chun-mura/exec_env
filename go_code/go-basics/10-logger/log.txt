@@ -1,0 +1,2 @@
+WARN: 2025/08/30 12:07:48 main.go:20: warning A
+ERROR: 2025/08/30 12:07:48 main.go:22: critical error

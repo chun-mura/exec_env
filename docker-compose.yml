@@ -84,11 +84,13 @@ services:
     container_name: go-app
     ports:
       - "8003:8003"
+      - "8080:8080" # トレースビューアー用ポート
     volumes:
       # 開発時はソースコードの変更を反映
       - .:/app
     environment:
       - APP_ENV=development
+      - GOTRACEBACK=all # トレース情報を有効化
     restart: unless-stopped
     tty: true
     stdin_open: true
